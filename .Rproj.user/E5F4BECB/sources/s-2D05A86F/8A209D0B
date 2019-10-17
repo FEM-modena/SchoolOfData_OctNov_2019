@@ -1,0 +1,28 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571300463936.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8A209D0B",
+    "lastKnownWriteTime" : 1571302680,
+    "last_content_update" : 1571302680092,
+    "path" : "~/Desktop/FEM/Github/DataSchool_OttobreNovembre_2019/SchoolOfData_OctNov_2019/Esercizi/01_Visualizzare_Dati.Rmd",
+    "project_path" : "Esercizi/01_Visualizzare_Dati.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "2,21",
+        "last_setup_crc32" : "2D05A86F740d1c70",
+        "scrollLine" : "1",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

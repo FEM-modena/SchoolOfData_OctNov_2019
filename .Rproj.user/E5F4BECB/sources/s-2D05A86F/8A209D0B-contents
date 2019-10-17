@@ -1,0 +1,86 @@
+---
+title: "School of Data: Visualizzare i Dati"
+output: html_notebook
+---
+Notebook ## R
+
+Questo è un [R Markdown] (http://rmarkdown.rstudio.com) Notebook. Quando si esegue il codice all'interno del notebook, i risultati vengono visualizzati sotto il codice.
+
+Il codice R va in ** blocchi di codice **, indicato da tre backtick. Prova a eseguire questo blocco facendo clic sul pulsante * Per eseguire il codice all'interno del blocco o posizionando il cursore al suo interno e premendo *Crtl + Maiusc + Invio * (Windows) o *Comando + Maiusc + Invio * (Mac).
+
+Aggiungi un nuovo pezzo facendo clic sul pulsante *Inserisci * sulla barra degli strumenti, quindi selezionando *R * o premendo *Ctrl + Alt + I * (Windows) o *Cmd + Opzione + I * (Mac).
+
+Il primo pezzo di un Notebook R è di solito intitolato "setup" e, per convenzione, include i pacchetti R che si desidera caricare. Ricorda, per usare un pacchetto R devi eseguire un codice `library ()` ogni sessione. Eseguire queste righe di codice per caricare i pacchetti.
+
+```{r setup}
+library(tidyverse)
+```
+
+```{r}
+mpg
+```
+
+
+## Tocca a te 1
+
+Esegui il codice sulla diapositiva per creare un grafico. Fai molta attenzione a ortografia, lettere maiuscole e parentesi!
+
+```{r}
+```
+
+## Tocca a te 2
+
+Aggiungi l'estetica di `color`,` size`, `alpha` e `shape` al tuo grafico. Sperimentate.
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+## Tocca a te 3
+
+Sostituisci questo grafico a dispersione con uno che disegna grafici a scatole (boxplot). Usa il cheatsheet. Prova la tua ipotesi migliore.
+
+```{r}
+ggplot(mpg) + geom_point(aes(class, hwy))
+```
+
+## Tocca a te 4
+
+Crea un istogramma della variabile `hwy` da `mpg`.
+
+```{r}
+```
+
+## Tocca a te 5
+
+Crea un diagramma di densità di `hwy` colorato da `class`.
+
+```{r}
+```
+
+## Tocca a te 6
+
+Crea un grafico a barre `hwy` colorato da `class`.
+
+```{r}
+```
+
+## Tocca a te 7
+
+Prevedi cosa farà questo codice. Quindi eseguilo.
+
+```{r}
+ggplot(mpg) + 
+  geom_point(aes(displ, hwy)) +
+  geom_smooth(aes(displ, hwy))
+```
+
+# Take aways
+
+È possibile utilizzare questo modello di codice per creare migliaia di grafici con **ggplot2**.
+
+```{r eval = FALSE}
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
