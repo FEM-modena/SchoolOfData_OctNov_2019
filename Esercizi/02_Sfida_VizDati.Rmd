@@ -1,0 +1,129 @@
+---
+title: "Sfida: Visualizza i Dati per l'UNESCO"
+author: "Lorenzo Andreoli, original work by Cedric Scherer"
+date: "October- November 2019"
+output:
+  html_document:
+    theme: united
+    highlight: tango
+    df_print: paged
+    code_folding: hide
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Un ringraziamento speciale a Cédric Scherer e alla comunità di TidyTuesday
+
+Questo tutorial si basa sul lavoro di [Cédric Scherer](https://cedricscherer.netlify.com/top/about/) e del suo tutorial "the evolution of a ggplot" che guarda ai [dati forniti dall'UNESCO sui rapporti globali tra studenti e insegnanti](http://data.uis.unesco.org/index.aspx?queryid=180) selezionato per [#TidyTuesday challenge 19 of 2019](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-05-07)
+
+```{r libraries, warning=FALSE}
+library(tidyverse)
+library(patchwork)
+library(rcartocolor)
+library(ggsci)
+library(extrafont)
+```
+
+## Data Preparation 
+Questa sezione di codice serve a preparare il dataset, non dovete modificarla. 
+```{r data preparation, include=FALSE, echo=FALSE}
+df_students <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-07/student_teacher_ratio.csv")
+df_world_tile <- readr::read_csv("https://gist.githubusercontent.com/maartenzam/787498bbc07ae06b637447dbd430ea0a/raw/9a9dafafb44d8990f85243a9c7ca349acd3a0d07/worldtilegrid.csv") %>%
+  mutate(
+    ## Namibias two-digit country code is handled as `NA` - let us fix that
+    alpha.2 = if_else(name == "Namibia", "NA", alpha.2),
+    ## We are going to split "Americas" into "North America" and "Sout America"
+    region = if_else(region == "Americas", sub.region, region),
+    region = if_else(region %in% c("Northern America", "Central America", "Caribbean"),
+                     "North America", region),
+    region = if_else(region == "Southern America", "South America", region),
+    ## to join both data sets, we need a id column
+    country_code = alpha.3
+  )
+df_ratios <- df_students %>%
+  ## Let's keep only the most recent data per country
+  group_by(country, indicator) %>%
+  filter(year == max(year)) %>%
+  ungroup() %>%
+  # Create `NA`s for countries which do not have any data 2012-2018
+  complete(indicator, nesting(country, country_code)) %>%
+  ## Let's focus on primary education and keep only countries (coded by letters)
+  filter(
+    indicator == "Primary Education",
+    str_detect(country_code, "[A-Z]")
+  ) %>%
+  ## merge with world tile map data
+  full_join(df_world_tile) %>%
+  filter(
+    !is.na(region),
+    !is.na(indicator)
+  ) %>%
+  group_by(region) %>%
+  mutate(student_ratio_region = mean(student_ratio, na.rm = T)) %>%
+  ungroup()
+```
+
+## Leggere il dataset
+Ecco come appaiono le colonne pertinenti dell'insieme di dati unito e pulito, mostrando 2 esempi per continente:
+```{r data-sample}
+set.seed(123)
+df_ratios %>%
+  group_by(region) %>%
+  sample_n(2) %>%
+  ungroup() %>% 
+  dplyr::select(indicator, country, region, student_ratio, student_ratio_region) %>%
+  head(12)
+```
+
+## Leggere il dataset II
+Anche queste funzioni possono essere utili per capire il dataset e le sue variabili 
+```{r data-sample II}
+head(df_ratios)
+view(df_ratios)
+names(df_ratios)
+```
+
+## Sfida 1: Creare un boxplot 
+Dove aggiungere le giuste variabili *x* e *y*. Il grafico deve rappresentare rapporto studenti/insegnanti *prima variabile* in ogni contienente.
+Dovete sostuire "" con il nome della variabile giusta 
+```{r boxplot-basic, warning=FALSE, fig.width = 8, fig.heigh = 4.5}
+ggplot(df_ratios, aes(x = "", y = "")) +
+  geom_boxplot()
+```
+
+## Come meglio riorganizzare i dati 
+Una buona routine con questo tipo di dati (qualitativi e non ordinati) per disporre i grafici a scatole (o qualsiasi altro tipo come barre) in un ordine crescente o decrescente per aumentare la leggibilità. Poiché la categoria "continente" non ha un ordinamento naturale, riorganizzare i grafici a scatole in base al loro rapporto studente-insegnante medio anziché in ordine alfabetico:
+
+```{r boxplot-sorted, fig.width = 8, fig.heigh = 4.5}
+df_sorted <- df_ratios %>% # questo codice crea una nuova variable 
+  mutate(region = fct_reorder(region, -student_ratio_region)) #questo codice riogranizza i dati
+ggplot(df_sorted, aes(x = region, y = student_ratio)) +
+  geom_boxplot()
+```
+
+Per aumentare la leggibilità, capovolgeremo le coordinate (nota che potremmo anche cambiare gli argomenti *x* e *y* nella specificazione ggplot2 - ma questo non funziona per i grafici a scatole quindi usiamo coord_flip ()). 
+
+# Sfida 2: cosa manca nel codice?
+
+Dovete aggiungere la funzione **geom_boxplot()** nel codice qui sotto, dove va aggiunto?
+È anche buona norma includere lo 0 nei grafici che possiamo aggiungere specificando la scale_y_continuous (limits = c (0, 90)).
+
+```{r boxplot-flipped, fig.width = 8, fig.heigh = 4.5,  warning=FALSE,}
+ggplot(df_sorted, aes(x = region, y = student_ratio)) +
+ 
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 90))
+```
+
+## Il mondo è colorato, aggiungiamo qualche colore al grafico 
+* usa un tema diverso che viene fornito con il pacchetto `ggplot2` chiamando` theme_set (theme_light ()) `(diversi temi vengono forniti con il pacchetto` ggplot2`
+* cambia il carattere e la dimensione complessiva del carattere aggiungendo gli argomenti `base_size` e` base_family` a `theme_light ()`,
+* capovolgi gli assi aggiungendo `coord_flip ()` (come visto prima),
+* lascia che l'asse inizi da 0 e riduca la spaziatura al margine del grafico aggiungendo `expand = c (0.005, 0.005)` come argomento a `scale_y_continious ()`,
+* aggiungi un po 'di colore codificando il continente aggiungendo `color = region` all'argomento` aes` e selezionando una palette dal pacchetto [`ggsci`] (),
+* aggiungi etichette significative / rimuovendo etichette inutili aggiungendo `lab (x = NULL, y =" title y ")`
+* regola il nuovo tema (ad es. modificando alcune impostazioni del carattere e rimuovendo la legenda e la griglia) aggiungendo `tema ()`.
