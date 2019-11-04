@@ -29,7 +29,6 @@ Il dataset che utilizziamo è una versione ripulita del dataset del'UNESCO con i
 Il dataset si chiama **df_ratios** e contiene diverse variabili che ci possono aiutare ad esplorare il rapporto tra studenti e insegnanti e come cambia in base al paese e continente
 ```{r libraries,echo=FALSE, message = FALSE,warning=FALSE}
 library(tidyverse)
-library(patchwork)
 library(rcartocolor)
 library(ggsci)
 library(extrafont)
@@ -218,7 +217,8 @@ g +
 
 ## L'ultimo grafico:
 
-### Congratulazioni! hai finito, ora ti manca solo l'ultima sfida
+### Congratulazioni! hai finito, ora ti manca solo di generare l'ultimo grafico, cambia i contenuti dei `labels` dall'inglese all'italiano 
+
 ```{r last-graph-hidden, warning=FALSE, fig.width = 8, fig.heigh = 4.5,echo=FALSE, message = FALSE,include=FALSE }
 set.seed(123)
 (g_text <- g +
