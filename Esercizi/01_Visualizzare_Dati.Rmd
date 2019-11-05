@@ -18,14 +18,24 @@ library(tidyverse)
 
 ```{r}
 mpg
+
 ```
 
+Capire il dataset 
+```{r}
+head()
+summary()
+view()
+names()
+```
 
 ## Tocca a te 1
 
 Esegui il codice sulla diapositiva per creare un grafico. Fai molta attenzione a ortografia, lettere maiuscole e parentesi!
 
 ```{r}
+
+
 ```
 
 ## Tocca a te 2
@@ -43,6 +53,7 @@ Sostituisci questo grafico a dispersione con uno che disegna grafici a scatole (
 
 ```{r}
 ggplot(mpg) + geom_point(aes(class, hwy))
+
 ```
 
 ## Tocca a te 4
@@ -50,6 +61,8 @@ ggplot(mpg) + geom_point(aes(class, hwy))
 Crea un istogramma della variabile `hwy` da `mpg`.
 
 ```{r}
+
+
 ```
 
 ## Tocca a te 5
@@ -57,6 +70,8 @@ Crea un istogramma della variabile `hwy` da `mpg`.
 Crea un diagramma di densità di `hwy` colorato da `class`.
 
 ```{r}
+
+
 ```
 
 ## Tocca a te 6
@@ -64,6 +79,8 @@ Crea un diagramma di densità di `hwy` colorato da `class`.
 Crea un grafico a barre `hwy` colorato da `class`.
 
 ```{r}
+
+
 ```
 
 ## Tocca a te 7
