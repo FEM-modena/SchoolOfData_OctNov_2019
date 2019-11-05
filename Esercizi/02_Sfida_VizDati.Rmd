@@ -259,8 +259,8 @@ set.seed(123)
 
 
 ### Congratulazioni! 
-Hai completato il corso di Data Science, clicca qui per scaricare o farti mandare il certificato! 
-[Scarica Certificato](https://fem.digital)
+Hai completato il corso di Data Science, clicca qui per vedere le altre attività FEM! 
+[Sito FEM](https://fem.digital)
 
 
 
